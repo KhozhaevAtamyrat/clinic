@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Пациенты</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <link href="/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+</head>
+<body>
+<div>
+    <nav class=" navbar navbar-expand navbar-light bg-light border-top-0">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" id="navbarDropdown"
+                       role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Доктора
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/admin/doctors">Показать</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/admin/addDoctor">Добавить</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/patients">Пациенты</a>
+                </li>
+
+            </ul>
+
+        </div>
+
+        <form action="/logout" method="get">
+            <button class="btn btn-outline-danger mr-2 my-sm-0" type="submit">Выход</button>
+        </form>
+    </nav>
+</div>
+
+<div>
+    <div class="container my-5 bg-light p-5 rounded">
+        <div class="row">
+            <table class="table align-middle">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Фамилия</th>
+                    <th scope="col">Логин</th>
+                    <th scope="col">Дата Рождения</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col">Запретить доступ</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="patient : ${patients}">
+                    <th scope="row" th:text="${patient.id}"></th>
+                    <td th:text="${patient.name}"></td>
+                    <td th:text="${patient.surname}"></td>
+                    <td th:text="${patient.login}"></td>
+                    <td th:text="${#dates.format(patient.dob, 'dd-MM-yyyy')}"></td>
+                    <td>
+                        <div th:if="${patient.notBanned}">
+                            <p>Активен</p>
+                        </div>
+                        <div th:unless="${patient.notBanned}">
+                            <p>Забанен</p>
+                        </div>
+                    </td>
+                    <td>
+
+
+                        <form th:action="@{/admin/patients/status/{id}(id=${patient.id})}" method="get">
+                            <div th:if="${patient.notBanned}">
+                                <button class="btn btn-danger btn-sm px-3" type="submit">Забанить</button>
+                            </div>
+
+                            <div th:unless="${patient.notBanned}">
+                                <button class="btn btn-success btn-sm px-3" type="submit">Разбанить</button>
+                            </div>
+
+                        </form>
+
+
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

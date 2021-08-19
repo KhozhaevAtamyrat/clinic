@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+
+    <title>Вход</title>
+    <meta name = "viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <link href="/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+
+</head>
+<body>
+
+<div>
+    <nav class=" navbar navbar-expand navbar-light bg-light border-top-0">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/doctor/patients">Пациенты</a>
+                </li>
+            </ul>
+        </div>
+
+        <form action="/logout" method="get">
+            <button class="btn btn-outline-danger mr-2 my-sm-0" type="submit">Выход</button>
+        </form>
+    </nav>
+</div>
+
+<div>
+    <div class="container my-5 bg-light p-5 rounded">
+        <div class="row">
+
+            <div class="container">
+                <div class="form">
+                    <div class="container-fluid">
+                        <form class="form-content" method="get" action="/doctor/patients">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="name">Имя</label>
+                                        <input id="name" name="name" type="text" class="form-control myInput" required
+                                               placeholder="Введите имя"   th:value="${name}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="surname">Фамилия</label>
+                                        <input id="surname"  name="surname" type="text" required
+                                               class="form-control myInput" placeholder="Введите фамилию"
+                                                th:value="${surname}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="dob">Дата Рождения</label>
+                                        <input id="dob" name="dob" type="date"
+                                               class="form-control myInput" placeholder="Введите дату рождения" th:value="${dob}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button class="btn btn-danger" type="submit" onclick="clearInput()">Очистить поля</button>
+                                <button type="submit" class="btn btn-primary">Поиск</button>
+                            </div>
+                        </form>
+                        <div class="divider"></div>
+
+                        <script>
+                            function clearInput() {
+                                let inputs = document.getElementsByClassName('myInput');
+                                for(i=0; i<inputs.length; i++){
+                                    inputs[i].value = '';
+                                }
+                            }
+                        </script>
+
+                        <table>
+                            <tr th:each="patient : ${patients}">
+                                <a class="link-card" th:href="@{/doctor/visits/{id}(id =${patient.id})}" th:style="${!patient.notBanned} ? 'pointer-events: none; cursor: default;'">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-12 mt-3">
+                                                <div class="card" th:style="${patient.notBanned} ? 'background-color: rgb(223, 240, 255)' : 'background-color: rgb(255, 223, 223)'">
+                                                    <div class="card-horizontal">
+                                                        <div class="img-square-wrapper">
+                                                            <div th:if="${patient.getFilename()}">
+                                                                <img class="img-thumbnail" th:src="@{/img/{file}(file=${patient.filename})}" width="200px" height="200px">
+                                                            </div>
+                                                            <div th:unless="${patient.getFilename()}">
+                                                                <img class="img-thumbnail" src="/images/noimg.png" th:src="@{/images/noimg.png}"
+                                                                     alt="NO IMAGE!"  width="200px" height="200px">
+                                                            </div>
+<!--                                                            <img class="" th:src="@{/img/{file}(file=${patient.filename})}" alt="Card image cap" width="200px" height="200px">-->
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <h4 class="card-title" th:text="${patient.name + ' ' + patient.surname}">Card title</h4>
+                                                            <p class="card-text" th:text="${#dates.format(patient.dob, 'dd-MM-yyyy')}">ГОД РОЖДЕНИЯ</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

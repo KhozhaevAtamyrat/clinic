@@ -1,0 +1,81 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.myfooter {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+}
+
+.card {
+    box-shadow: 2px 5px 5px rgb(179, 179, 179);
+}
+
+.card-img{
+    transition: opacity 200ms linear;
+}
+
+.card-img:hover{
+    opacity: 0.8;
+}
+
+
+.btn-reg-log{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+.card-horizontal {
+    display: flex;
+    flex: 1 1 auto;
+}
+
+.link-card{
+    color: #000;
+    transition: color 100ms linear;
+}
+
+.link-card:hover{
+    text-decoration:none;
+    color:gray;
+}
+
+.divider {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.btn-fix{
+    position: fixed;
+    bottom: 3px;
+    right: 3px;
+}
+
+.my-info{
+    display: block;
+    background: white; /* Цвет фона */
+    padding: 30px;
+    box-shadow: 2px 5px 5px rgb(179, 179, 179);
+    border-radius: 5px;
+}
+
+.my-info-text{
+    font-size: 3rem;
+    color:rgb(179, 179, 179);
+}
+
+.myform{
+    box-shadow: 2px 5px 5px rgb(179, 179, 179);
+}

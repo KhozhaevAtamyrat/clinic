@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+
+    <title>Вход</title>
+    <meta name = "viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <link href="/css/main.css" th:href="@{/css/main.css}" rel="stylesheet"/>
+
+</head>
+<body>
+
+
+
+<div>
+    <nav class=" navbar navbar-expand navbar-light bg-light border-top-0">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/patient">Визиты</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" id="navbarDropdown"
+                       role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Аккаунт
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/patient/profile">Показать</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/patient/settings">Изменить</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <form action="/logout" method="get">
+            <button class="btn btn-outline-danger mr-2 my-sm-0" type="submit">Выход</button>
+        </form>
+    </nav>
+</div>
+
+<div class="container bg-light mt-5">
+    <div class="form-content row justify-content-center">
+        <form class="col-6 p-5 myform my-5" method="post" action="/patient/settings" enctype="multipart/form-data">
+
+            <div>
+                <div th:if="${patient.getFilename()}">
+                    <img class="img-thumbnail" th:src="@{/img/{file}(file=${patient.getFilename()})}" width="100%" height="100%">
+                </div>
+                <div th:unless="${patient.getFilename()}">
+                    <img class="img-thumbnail" src="/images/noimg.png" th:src="@{/images/noimg.png}"
+                         alt="NO IMAGE!"  width="100%" height="100%">
+                </div>
+
+                <input class="form-control" name="file" type="file" th:value="${patient.getFilename()}">
+            </div>
+
+            <div class="form-group mt-3">
+                <label for="name">Имя</label>
+                <input id="name"  name="name" type="text"
+                       class="form-control" th:value="${patient.getName()}" required
+                       pattern="^[а-яА-ЯёЁ]{3,30}$" title="3-30 кириллица">
+            </div>
+            <div class="form-group">
+                <label for="surname">Фамилия</label>
+                <input id="surname" name="surname" type="text"
+                       class="form-control" th:value="${patient.getSurname()}" required
+                       pattern="^[а-яА-ЯёЁ]{3,30}$" title="3-30 кириллица">
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Год Рождения</label>
+                <input id="dob" name="dob" type="date"
+                       class="form-control" th:value="${#dates.format(patient.getDob(), 'yyyy-MM-dd')}" required>
+            </div>
+
+            <script>
+                let today = new Date();
+                let dd = today.getDate();
+                let mm = today.getMonth()+1; //January is 0!
+                let yyyy = today.getFullYear();
+                if(dd<10){
+                    dd='0'+dd
+                }
+                if(mm<10){
+                    mm='0'+mm
+                }
+
+                today = yyyy+'-'+mm+'-'+dd;
+                document.getElementById("dob").setAttribute("max", today);
+            </script>
+
+            <button type="submit" class="btn btn-primary">Изменить</button>
+
+        </form>
+
+    </div>
+</div>
+
+
+</body>
+</html>
